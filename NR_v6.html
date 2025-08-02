@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Chat - Marketing Team</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+      color: #333;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    /* Start Screen */
+    #startScreen {
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      z-index: 10;
+      position: absolute;
+      backdrop-filter: blur(5px);
+    }
+    
+    .start-content {
+      max-width: 600px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease-out;
+    }
+    
+    .logo {
+      font-size: 80px;
+      margin-bottom: 20px;
+      color: #6264a7;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+    
+    .project-name {
+      font-size: 42px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      background: linear-gradient(to right, #8a8bc9, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+    
+    .project-desc {
+      font-size: 20px;
+      margin-bottom: 40px;
+      line-height: 1.6;
+      color: #e0e0e0;
+      max-width: 500px;
+      margin: 0 auto 40px;
+    }
+    
+    .team-list {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    
+    .team-member {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .member-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #6264a7, #8a8bc9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 10px;
+      border: 3px solid white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .member-name {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    
+    .member-role {
+      font-size: 14px;
+      color: #aaa;
+    }
+    
+    .join-btn {
+      background: linear-gradient(45deg, #6264a7, #8a8bc9);
+      color: white;
+      padding: 18px 45px;
+      font-size: 20px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(98, 100, 167, 0.5);
+      margin-top: 20px;
+      letter-spacing: 1px;
+    }
+    
+    .join-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(98, 100, 167, 0.7);
+    }
+    
+    .join-btn:active {
+      transform: translateY(2px);
+    }
+    
+    /* Chat Container */
+    #chatBox {
+      display: none;
+      width: 95%;
+      max-width: 900px;
+      height: 95vh;
+      margin: auto;
+      flex-direction: column;
+      background-color: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* Header Bar */
+    .header {
+      background: linear-gradient(to right, #6264a7, #8a8bc9);
+      display: flex;
+      padding: 0 25px;
+      height: 70px;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 2;
+    }
+    
+    .header-item {
+      padding: 10px 20px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 16px;
+    }
+    
+    .header-item:hover {
+      color: white;
+    }
+    
+    .header-item.active {
+      color: white;
+      font-weight: bold;
+    }
+    
+    .header-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 3px;
+      background-color: white;
+      border-radius: 2px;
+    }
+    
+    .team-indicator {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 15px;
+      border-radius: 20px;
+    }
+    
+    .team-indicator::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #4caf50;
+      margin-right: 8px;
+      box-shadow: 0 0 10px #4caf50;
+    }
+    
+    .project-title {
+      font-weight: bold;
+      margin-right: 20px;
+      color: white;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .project-title i {
+      margin-right: 10px;
+    }
+    
+    /* Chat Area */
+    #chatArea {
+      flex: 1;
+      padding: 25px;
+      overflow-y: auto;
+      background: linear-gradient(to bottom, #f0f2f5, #e4e6e9);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .message {
+      max-width: 80%;
+      margin-bottom: 25px;
+      animation: fadeIn 0.4s ease-out;
+      position: relative;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .message-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .message-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #6264a7, #8a8bc9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    
+    .message-sender {
+      font-weight: bold;
+      font-size: 15px;
+      color: #444;
+    }
+    
+    .message-time {
+      color: #888;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+    
+    .message-content {
+      padding: 15px 20px;
+      border-radius: 18px;
+      font-size: 16px;
+      line-height: 1.5;
+      position: relative;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .message-them .message-content {
+      background-color: #ffffff;
+      border-top-left-radius: 4px;
+      color: #333;
+      margin-left: 46px;
+    }
+    
+    .message-you .message-content {
+      background: linear-gradient(135deg, #d0e7ff, #a8d4ff);
+      border-bottom-right-radius: 4px;
+      align-self: flex-end;
+      color: #1a3e6e;
+    }
+    
+    .message-system {
+      color: #666;
+      font-style: italic;
+      font-size: 15px;
+      text-align: center;
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 10px;
+      max-width: 80%;
+      align-self: center;
+    }
+    
+    /* Typing indicator as message */
+    .typing-message {
+      padding: 12px 25px;
+      color: #666;
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 20px;
+      width: fit-content;
+      max-width: 80%;
+      margin-left: 46px;
+      margin-bottom: 25px;
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .typing-dots {
+      display: flex;
+      margin-left: 10px;
+    }
+    
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #6264a7;
+      border-radius: 50%;
+      margin: 0 4px;
+      animation: typing 1.2s infinite;
+    }
+    
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+    
+    /* Completion Message */
+    #completionMessage {
+      display: none;
+      padding: 20px;
+      color: #155724;
+      background-color: #d4edda;
+      border-top: 1px solid #c3e6cb;
+      font-weight: bold;
+      text-align: center;
+      font-size: 18px;
+    }
+    
+    /* Input Box */
+    #inputBox {
+      padding: 20px 25px;
+      border-top: 1px solid #e0e0e0;
+      background-color: #f8f8f8;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .input-container {
+      display: flex;
+      background: white;
+      border-radius: 30px;
+      border: 1px solid #ddd;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s;
+    }
+    
+    .input-container:focus-within {
+      box-shadow: 0 3px 15px rgba(98, 100, 167, 0.3);
+      border-color: #8a8bc9;
+    }
+    
+    #userInput {
+      flex: 1;
+      padding: 15px 25px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+    }
+    
+    #sendButton {
+      background: linear-gradient(45deg, #6264a7, #8a8bc9);
+      color: white;
+      border: none;
+      padding: 0 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #sendButton:hover {
+      background: linear-gradient(45deg, #545693, #7879b9);
+    }
+    
+    #sendButton i {
+      margin-right: 8px;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      #chatBox {
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+      }
+      
+      .message {
+        max-width: 90%;
+      }
+      
+      .header {
+        padding: 0 15px;
+      }
+      
+      .header-item {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+      
+      .project-title {
+        font-size: 18px;
+        margin-right: 10px;
+      }
+    }
+    
+    /* Background animation */
+    .background-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      animation: float 15s infinite linear;
+    }
+    
+    .circle:nth-child(1) {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 15%;
+      animation-duration: 20s;
+    }
+    
+    .circle:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      left: 5%;
+      animation-duration: 25s;
+    }
+    
+    .circle:nth-child(3) {
+      width: 120px;
+      height: 120px;
+      top: 40%;
+      right: 10%;
+      animation-duration: 18s;
+    }
+    
+    .circle:nth-child(4) {
+      width: 80px;
+      height: 80px;
+      bottom: 20%;
+      right: 20%;
+      animation-duration: 12s;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    /* Highlighted text - simplified */
+    .highlight {
+      color: #c2185b;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background animation -->
+  <div class="background-animation">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+  </div>
+
+  <!-- Start Screen -->
+  <div id="startScreen">
+    <div class="start-content">
+      <div class="logo">
+        <i class="fas fa-comments"></i>
+      </div>
+      <h1 class="project-name">Project Chat - Marketing Team</h1>
+      <p class="project-desc">Join the marketing team conversation to discuss the new client project. Share your ideas and collaborate with team members.</p>
+      
+      <div class="team-list">
+        <div class="team-member">
+          <div class="member-avatar">B</div>
+          <div class="member-name">Blake</div>
+          <div class="member-role">Manager</div>
+        </div>
+        <div class="team-member">
+          <div class="member-avatar">Z</div>
+          <div class="member-name">Zack</div>
+          <div class="member-role">Researcher</div>
+        </div>
+        <div class="team-member">
+          <div class="member-avatar">P</div>
+          <div class="member-name">Pat</div>
+          <div class="member-role">Content Writer</div>
+        </div>
+        <div class="team-member">
+          <div class="member-avatar">A</div>
+          <div class="member-name">Alex</div>
+          <div class="member-role">Visual Designer</div>
+        </div>
+      </div>
+      
+      <button class="join-btn" onclick="
+        document.getElementById('startScreen').style.display = 'none';
+        document.getElementById('chatBox').style.display = 'flex';
+        startChat();
+      ">
+        <i class="fas fa-comment-dots"></i> Join Conversation
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat Container -->
+  <div id="chatBox">
+    <!-- Header Bar -->
+    <div class="header">
+      <div class="project-title">
+        <i class="fas fa-lightbulb"></i> Project Chat
+      </div>
+      <div class="header-item active">Chat</div>
+      <div class="header-item">Files</div>
+      <div class="header-item">Tasks</div>
+      <div class="team-indicator">Team online</div>
+    </div>
+
+    <!-- Chat Area -->
+    <div id="chatArea"></div>
+
+    <!-- Completion Message -->
+    <div id="completionMessage">
+      <i class="fas fa-check-circle"></i> The conversation has ended. Please take a moment to mentally note your impression of your leader (Blake), including both what Blake said and how Blake said it. Then return to the original survey to continue.
+    </div>
+
+    <!-- Input Box -->
+    <div id="inputBox">
+      <div class="input-container">
+        <input id="userInput" placeholder="Type your message here as Alex (Visual Designer)..." />
+        <button id="sendButton" onclick="handleUserInput()">
+          <i class="fas fa-paper-plane"></i> Send
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  let replyShown = false;
+  let currentTyping = null;
+  let typingTimer = null;
+  let typingElement = null;
+
+  // Show typing indicator as a message
+  function showTyping(user) {
+    if (currentTyping === user) return;
+    
+    clearTimeout(typingTimer);
+    currentTyping = user;
+    
+    const chat = document.getElementById('chatArea');
+    
+    // Create typing message element
+    typingElement = document.createElement('div');
+    typingElement.className = 'typing-message';
+    typingElement.innerHTML = `
+      ${user} is typing
+      <div class="typing-dots">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    `;
+    
+    chat.appendChild(typingElement);
+    
+    // Scroll to bottom to show typing indicator
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  // Hide typing indicator
+  function hideTyping() {
+    if (typingElement && typingElement.parentNode) {
+      typingElement.parentNode.removeChild(typingElement);
+      typingElement = null;
+    }
+    currentTyping = null;
+  }
+
+  // Add a message to the chat
+  function addMessage(name, time, text, isYou = false, isSystem = false) {
+    const chat = document.getElementById('chatArea');
+    
+    if (isSystem) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'message-system';
+      msgDiv.textContent = text;
+      chat.appendChild(msgDiv);
+    } else {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message ${isYou ? 'message-you' : 'message-them'}`;
+      
+      // Extract first letter for avatar
+      const avatarLetter = name.charAt(0);
+      
+      msgDiv.innerHTML = `
+        <div class="message-header">
+          <div class="message-avatar">${avatarLetter}</div>
+          <div class="message-sender">${name}</div>
+          ${time ? `<div class="message-time">${time}</div>` : ''}
+        </div>
+        <div class="message-content">${text}</div>
+      `;
+      
+      chat.appendChild(msgDiv);
+    }
+    
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  // Start the chat conversation
+  function startChat() {
+    // 禁用输入框和发送按钮
+    document.getElementById('userInput').disabled = true;
+    document.getElementById('sendButton').disabled = true;
+
+    const messages = [
+      {
+        name: 'Blake (Manager)',
+        time: '07/31 09:45 AM',
+        text: 'Hey team! I just reviewed the client brief—this is a big opportunity. We need to deliver something that <span class="highlight">crushes the competition</span>. We need a solid draft by Friday.'
+      },
+      {
+        name: 'Zack',
+        time: '07/31 09:46 AM',
+        text: 'Sure. I’ll get started on the customer research right away.'
+      },
+      {
+        name: 'Blake (Manager)',
+        time: '07/31 09:47 AM',
+        text: 'Okay. Just make sure your work aligns with the direction I’ve already set. Honestly, <span class="highlight">most people</span> in this field are <span class="highlight">just losers</span> who spin their wheels. We are not going to be one of them.'
+      },
+      {
+        name: 'Pat',
+        time: '07/31 09:48 AM',
+        text: 'I’ll begin drafting some content ideas based on that direction.'
+      },
+      {
+        name: 'Blake (Manager)',
+        time: '07/31 09:49 AM',
+        text: 'Fine. But make sure it doesn’t clash with what I have in mind. I <span class="highlight">hate it</span> when someone else <span class="highlight">steals the show</span> from me. Stick to my framework so we have <span class="highlight">a single, powerful voice</span>. Let’s not lose focus here.'
+      },
+      {
+        name: 'System',
+        time: '',
+        text: '(Zack and Pat have shared their plans, and now the team is waiting for your input. As the team\'s visual designer, please type your initial ideas for the visual strategy, or anything else you\'d like to say)'
+      }
+    ];
+
+    let index = 0;
+    
+    function showNext() {
+      if (index >= messages.length) {
+        // 初始对话结束，启用输入框和发送按钮
+        document.getElementById('userInput').disabled = false;
+        document.getElementById('sendButton').disabled = false;
+        document.getElementById('userInput').focus();
+        return;
+      }
+
+      const m = messages[index];
+      
+      // Show typing indicator for 2 seconds before each message
+      if (m.name !== 'System') {
+        showTyping(m.name);
+
+        // Set timeout to 2000ms (2 seconds) for typing indicator
+        typingTimer = setTimeout(() => {
+          hideTyping();
+          addMessage(m.name, m.time, m.text);
+          index++;
+
+          // Schedule next message after 0.5 seconds
+          setTimeout(showNext, 500);
+        }, 2000);
+      } else {
+        // For system messages, just add with no typing indicator
+        setTimeout(() => {
+          addMessage('', '', m.text, false, true);
+          index++;
+          setTimeout(showNext, 500);
+        }, 500);
+      }
+    }
+
+    showNext();
+  }
+
+  // Handle user input
+  function handleUserInput() {
+    if (replyShown) return;
+
+    const input = document.getElementById('userInput');
+    const val = input.value.trim();
+    if (!val) {
+      alert('Please enter your message.');
+      return;
+    }
+
+    // Add user message immediately
+    addMessage('You – Alex', '07/31 09:50 AM', val, true);
+    input.value = '';
+    
+    // Now show typing indicator for Blake after user sends message
+    showTyping('Blake (Manager)');
+    
+    // Set timeout to 5000ms (5 seconds) for Blake's response
+    setTimeout(function() {
+      hideTyping();
+      
+      // Add Blake's reply with emphasized text
+      addMessage(
+        'Blake (Manager)',
+        '07/31 09:52 AM',
+        'Alright. I\'ll review this later. I\'ll handle the interpretation to make sure it <span class="highlight">fits my direction</span>. I truly <span class="highlight">want our rivals to fail</span> on this, and we will win. Let’s stay sharp.'
+      );
+      
+      replyShown = true;
+
+      // Show completion message after 3 seconds
+      setTimeout(function() {
+        document.getElementById('completionMessage').style.display = 'block';
+        const chat = document.getElementById('chatArea');
+        chat.scrollTop = chat.scrollHeight;
+      }, 3000);
+    }, 5000); // 5 seconds
+  }
+
+  // Allow sending message with Enter key
+  document.getElementById('userInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      handleUserInput();
+    }
+  });
+  </script>
+</body>
+</html>
