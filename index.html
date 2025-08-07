@@ -684,7 +684,6 @@
 
   // Start the chat conversation
   function startChat() {
-    // 禁用输入框和发送按钮
     document.getElementById('userInput').disabled = true;
     document.getElementById('sendButton').disabled = true;
 
@@ -692,7 +691,7 @@
       {
         name: 'Blake (Manager)',
         time: '07/31 09:45 AM',
-        text: 'Hey team! I just reviewed the client brief—this is a big opportunity. We need to deliver something that <span class="highlight">crushes the competition</span>. We need a solid draft by Friday.'
+        text: 'Hey team. I just reviewed the client brief. Let’s not end up like most of the mediocre teams out there. We need a solid draft by Friday.'
       },
       {
         name: 'Zack',
@@ -702,7 +701,7 @@
       {
         name: 'Blake (Manager)',
         time: '07/31 09:47 AM',
-        text: 'Okay. Just make sure your work aligns with the direction I’ve already set. Honestly, <span class="highlight">most people</span> in this field are <span class="highlight">just losers</span> who spin their wheels. We are not going to be one of them.'
+        text: 'Okay. Just remember, <span class="highlight">most people</span> in this industry are <span class="highlight">spinning their wheels and getting nowhere</span>. Let’s prove we’re not like them.'
       },
       {
         name: 'Pat',
@@ -712,7 +711,7 @@
       {
         name: 'Blake (Manager)',
         time: '07/31 09:49 AM',
-        text: 'Fine. But make sure it doesn’t clash with what I have in mind. I <span class="highlight">hate it</span> when someone else <span class="highlight">steals the show</span> from me. Stick to my framework so we have <span class="highlight">a single, powerful voice</span>. Let’s not lose focus here.'
+        text: 'Okay. I get seriously <span class="highlight">annoyed</span> when someone tries to <span class="highlight">steal the spotlight</span> with off-track ideas. Stick to my plan.'
       },
       {
         name: 'System',
@@ -722,33 +721,23 @@
     ];
 
     let index = 0;
-    
     function showNext() {
       if (index >= messages.length) {
-        // 初始对话结束，启用输入框和发送按钮
         document.getElementById('userInput').disabled = false;
         document.getElementById('sendButton').disabled = false;
         document.getElementById('userInput').focus();
         return;
       }
-
       const m = messages[index];
-      
-      // Show typing indicator for 2 seconds before each message
       if (m.name !== 'System') {
         showTyping(m.name);
-
-        // Set timeout to 2000ms (2 seconds) for typing indicator
         typingTimer = setTimeout(() => {
           hideTyping();
           addMessage(m.name, m.time, m.text);
           index++;
-
-          // Schedule next message after 0.5 seconds
           setTimeout(showNext, 500);
         }, 2000);
       } else {
-        // For system messages, just add with no typing indicator
         setTimeout(() => {
           addMessage('', '', m.text, false, true);
           index++;
@@ -756,7 +745,6 @@
         }, 500);
       }
     }
-
     showNext();
   }
 
@@ -771,27 +759,20 @@
       return;
     }
 
-    // Add user message immediately
     addMessage('You – Alex', '07/31 09:50 AM', val, true);
     input.value = '';
-    
-    // Now show typing indicator for Blake after user sends message
+
     showTyping('Blake (Manager)');
-    
-    // Set timeout to 5000ms (5 seconds) for Blake's response
+
     setTimeout(function() {
       hideTyping();
-      
-      // Add Blake's reply with emphasized text
       addMessage(
         'Blake (Manager)',
         '07/31 09:52 AM',
-        'Alright. I\'ll review this later. I\'ll handle the interpretation to make sure it <span class="highlight">fits my direction</span>. I truly <span class="highlight">want our rivals to fail</span> on this, and we will win. Let’s stay sharp.'
+        'Okay. I’ll check everything later. Honestly, I want to see our <span class="highlight">competitors fail badly</span> on this project. Let’s stay focused and make it count.'
       );
-      
       replyShown = true;
 
-      // Show completion message after 3 seconds
       setTimeout(function() {
         document.getElementById('completionMessage').style.display = 'block';
         const chat = document.getElementById('chatArea');
