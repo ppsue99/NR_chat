@@ -544,13 +544,13 @@
       
       <div class="team-list">
         <div class="team-member">
-          <div class="member-avatar">B</div>
-          <div class="member-name">Blake</div>
+          <div class="member-avatar">M</div>
+          <div class="member-name">Morgan</div>
           <div class="member-role">Manager</div>
         </div>
         <div class="team-member">
-          <div class="member-avatar">Z</div>
-          <div class="member-name">Zack</div>
+          <div class="member-avatar">T</div>
+          <div class="member-name">Taylor</div>
           <div class="member-role">Researcher</div>
         </div>
         <div class="team-member">
@@ -594,7 +594,7 @@
     <!-- Completion Message -->
     <div id="completionMessage">
       <i class="fas fa-check-circle"></i>
-      The conversation has ended. Please take a moment to mentally note your impression of your leader (Blake), including both what Blake said and how Blake said it.<br>
+      The conversation has ended. Please take a moment to mentally note your impression of your leader (Morgan), including both what Morgan said and how Morgan said it.<br>
       When you are ready, please close this window and return to the original questionnaire tab to continue the survey.
     </div>
 
@@ -689,17 +689,17 @@
 
     const messages = [
       {
-        name: 'Blake (Manager)',
+        name: 'Morgan (Manager)',
         time: '07/31 09:45 AM',
         text: 'Hi team. I’ve just gone through the client brief — this is a real opportunity to prove our rivals are inferior. We’ll need a solid draft by Friday.'
       },
       {
-        name: 'Zack',
+        name: 'Taylor',
         time: '07/31 09:46 AM',
         text: 'Sure. I’ll get started on the customer research right away.'
       },
       {
-        name: 'Blake (Manager)',
+        name: 'Morgan (Manager)',
         time: '07/31 09:47 AM',
         text: 'Okay. Just avoid the common traps other teams fall into. Honestly, most of them just recycle the same boring nonsense and call it creative — it’s pathetic. You might want to take a close look at the campaign I led last time. Skip the flashy innovation — getting it right is how we’ll leave our rivals behind. Let’s stay on track.'
       },
@@ -709,14 +709,14 @@
         text: 'I’ll begin drafting some content ideas based on that direction.'
       },
       {
-        name: 'Blake (Manager)',
+        name: 'Morgan (Manager)',
         time: '07/31 09:49 AM',
         text: 'Okay. I’m not expecting anything groundbreaking from you— just follow the direction so we don’t lose focus.'
       },
       {
         name: 'System',
         time: '',
-        text: '(Zack and Pat have shared their plans, and now the team is waiting for your input. As the team\'s visual designer, please type your initial ideas for the visual strategy, or anything else you\'d like to say)'
+        text: '(Taylor and Pat have shared their plans, and now the team is waiting for your input. As the team\'s visual designer, please type your initial ideas for the visual strategy, or anything else you\'d like to say)'
       }
     ];
 
@@ -762,12 +762,12 @@
     addMessage('You – Alex', '07/31 09:50 AM', val, true);
     input.value = '';
 
-    showTyping('Blake (Manager)');
+    showTyping('Morgan (Manager)');
 
     setTimeout(function() {
       hideTyping();
       addMessage(
-        'Blake (Manager)',
+        'Morgan (Manager)',
         '07/31 09:52 AM',
         'Okay. Just keep focused and get this project over the line. I don’t want anyone going off-script.'
       );
